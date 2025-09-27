@@ -1,41 +1,57 @@
-# Node modules
-node_modules/
+# Dependencies
+/node_modules
+/front-end/node_modules
+/back-end/node_modules
 
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Build output
-dist/
-build/
-public/build/
+# Production build
+/front-end/build
+/back-end/dist
 
 # Environment variables
 .env
+/back-end/.env
+/front-end/.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# OS files
-.DS_Store
-Thumbs.db
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# IDE files
+# Testing
+/coverage
+/front-end/coverage
+/back-end/coverage
+
+# IDE
 .vscode/
 .idea/
 *.sublime-workspace
 *.sublime-project
 
-# Coverage reports
-coverage/
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# React specific
+/front-end/.pnp
+/front-end/.pnp.js
+/front-end/.eslintcache
+
+# MongoDB
+/back-end/data
+*.dump
+dump/
 
 # Misc
-*.tgz
-*.gz
-
-# MongoDB database files (if any local dumps)
-dump/
+*.log
+.cache/
+.temp/
