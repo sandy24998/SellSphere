@@ -1,0 +1,122 @@
+### GET REQUEST ###
+GET http://localhost:5000/api/sellProduct
+###
+GET http://localhost:5000/api/sellProduct?product=Laptop
+###
+GET http://localhost:5000/api/sellProduct?sortBy=lowerCostPrice
+###
+GET http://localhost:5000/api/sellProduct?sortBy=higherCostPrice
+###
+GET http://localhost:5000/api/sellProduct?sortBy=lowerSoldPrice
+###
+GET http://localhost:5000/api/sellProduct?sortBy=higherSoldPrice
+###
+GET http://localhost:5000/api/sellProduct?sortBy=invalidSort
+###
+GET http://localhost:5000/api/sellProduct?product=Laptop&sortBy=lowerCostPrice
+###
+GET http://localhost:5000/api/sellProduct?sortBy=higherCostPrice&product=Tablet
+###
+GET http://localhost:5000/api/sellProduct?sortBy=lowerCostPrice&sortBy=higherSoldPrice
+###
+GET http://localhost:5000/api/sellProduct?product=Laptop&invalidParam=value
+
+### POST REQUEST ###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "PlayStation",
+    "costPrice": 5000,
+    "soldPrice": 7000
+}
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "Pen",
+    "costPrice": 5,
+    "soldPrice": 10
+}
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "Monitor",
+    "costPrice": -100,
+    "soldPrice": 200
+}
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "Keyboard",
+    "costPrice": 20,
+    "soldPrice": 0
+}
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "costPrice": 50,
+    "soldPrice": 75
+}
+
+###
+POST http://localhost:5000/api/sellProduct HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "Desktop",
+    "costPrice": 800,
+    "soldPrice": 1000,
+    "category": "Electronics"
+}
+
+### PATCH REQUEST ###
+PATCH http://localhost:5000/api/sellProduct/65b6f0000000000000000001 HTTP/1.1
+Content-Type: application/json
+
+{}
+###
+PATCH http://localhost:5000/api/sellProduct/invalid_id HTTP/1.1
+Content-Type: application/json
+
+{}
+###
+PATCH http://localhost:5000/api/sellProduct/67e948c768a6aea904677d12 HTTP/1.1
+Content-Type: application/json
+
+{
+"soldPrice": 2000
+}
+###
+PATCH http://localhost:5000/api/sellProduct/65b6f0000000000000000002 HTTP/1.1
+Content-Type: application/json
+
+{
+"soldPrice": 0
+}
+###
+PATCH http://localhost:5000/api/sellProduct/65b6f0000000000000000003 HTTP/1.1
+Content-Type: application/json
+
+{
+"soldPrice": -100
+}
+
+### DELETE REQUEST ###
+DELETE http://localhost:5000/api/sellProduct/67e911171234bbbccb7ede2a HTTP/1.1
+
+###
+DELETE http://localhost:5000/api/sellProduct/invalid_id HTTP/1.1
