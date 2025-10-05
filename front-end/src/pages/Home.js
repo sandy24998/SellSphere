@@ -8,7 +8,7 @@ const Home = () => (
     <Navbar/>
     <main className="hero-section">
       <div className="hero-content">
-        <h1>Welcome to Sell Sphere</h1>
+        <h1>Welcome to Sell Sphere - PR TEST</h1>
         <p className="hero-subtitle">Track your products efficiently</p>
         <div className="cta-buttons">
           <Link to="/products" className="cta-button primary">View Products</Link>
