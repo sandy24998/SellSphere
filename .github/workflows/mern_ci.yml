@@ -2,22 +2,27 @@ name: MERN CI Pipeline
 
 on:
   push:
-    branches: [ main, "feature/**" ]
+    branches: [main, "feature/**"]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     services:
       mongodb:
         image: mongo:latest
         ports:
-          - 27017:27017    
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       # 1️⃣ Checkout repo
@@ -36,20 +41,21 @@ jobs:
         working-directory: back-end
         run: npm ci
 
-      - name: Run backend tests
+      - name: Run backend tests (local MongoDB)
         working-directory: back-end
+        env:
+          MONGO_URI: mongodb://localhost:27017/SellAndBuy
+          PORT: 5000
+          NODE_ENV: test
         run: |
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
-          echo "PORT=5000" >> .env
+          echo "PORT=$PORT" > .env
+          echo "MONGO_URI=$MONGO_URI" >> .env
           if [ -f package.json ] && npm run | grep -q "test"; then
-            NODE_ENV=test npx jest --ci --detectOpenHandles --forceExit
+            echo "🧪 Running backend tests..."
+            npx jest --ci --detectOpenHandles --forceExit
           else
             echo "No backend tests found, skipping..."
           fi
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          PORT: 5000
-          NODE_ENV: test
 
       # 3️⃣ Frontend setup
       - name: Setup Node.js for frontend
@@ -71,14 +77,14 @@ jobs:
         working-directory: front-end
         run: |
           if [ -f package.json ] && npm run | grep -q "test"; then
+            echo "🧪 Running frontend tests..."
             npx jest --ci --watchAll=false
           else
             echo "No frontend tests found, skipping..."
           fi
 
       # 4️⃣ Optional start script
-      - name: Run start script
+      - name: Run start script (optional)
         run: |
           chmod +x ./start.sh
           ./start.sh || echo "Skipping runtime verification"
-
