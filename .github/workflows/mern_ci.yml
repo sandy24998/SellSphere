@@ -38,6 +38,8 @@ jobs:
           else
             echo "No backend tests found, skipping..."
           fi
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
 
       # 3️⃣ Frontend setup
       - name: Setup Node.js for frontend
