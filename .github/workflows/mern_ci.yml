@@ -13,6 +13,12 @@ jobs:
       matrix:
         node-version: [18.x]
 
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017    
+
     steps:
       # 1️⃣ Checkout repo
       - name: Checkout repository
