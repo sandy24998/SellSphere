@@ -34,7 +34,7 @@ jobs:
         working-directory: back-end
         run: |
           if [ -f package.json ] && npm run | grep -q "test"; then
-            npm test --if-present
+            npx jest --ci
           else
             echo "No backend tests found, skipping..."
           fi
@@ -59,7 +59,7 @@ jobs:
         working-directory: front-end
         run: |
           if [ -f package.json ] && npm run | grep -q "test"; then
-            npm test --if-present -- --watchAll=false
+            npx jest --ci --watchAll=false
           else
             echo "No frontend tests found, skipping..."
           fi
