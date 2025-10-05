@@ -33,14 +33,17 @@ jobs:
       - name: Run backend tests
         working-directory: back-end
         run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+          echo "PORT=5000" >> .env
           if [ -f package.json ] && npm run | grep -q "test"; then
-            npx jest --ci
+            NODE_ENV=test npx jest --ci --detectOpenHandles --forceExit
           else
             echo "No backend tests found, skipping..."
           fi
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           PORT: 5000
+          NODE_ENV: test
 
       # 3️⃣ Frontend setup
       - name: Setup Node.js for frontend
