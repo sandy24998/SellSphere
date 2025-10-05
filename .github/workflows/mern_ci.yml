@@ -12,25 +12,20 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+
     steps:
-      # -----------------------------
-      # 1. Checkout repo
-      # -----------------------------
+      # 1️⃣ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # -----------------------------
-      # 2. Setup Node.js
-      # -----------------------------
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # -----------------------------
-      # 3. Backend installation & tests
-      # -----------------------------
+      # 3️⃣ Backend (back-end folder)
       - name: Install backend dependencies
         working-directory: back-end
         run: npm ci
@@ -38,15 +33,13 @@ jobs:
       - name: Run backend tests
         working-directory: back-end
         run: |
-          if [ -f "package.json" ] && npm run | grep -q "test"; then
+          if [ -f package.json ] && npm run | grep -q "test"; then
             npm test --if-present
           else
             echo "No backend tests found, skipping..."
           fi
 
-      # -----------------------------
-      # 4. Frontend installation & build & tests
-      # -----------------------------
+      # 4️⃣ Frontend (front-end folder)
       - name: Install frontend dependencies
         working-directory: front-end
         run: npm ci
@@ -58,17 +51,15 @@ jobs:
       - name: Run frontend tests
         working-directory: front-end
         run: |
-          if [ -f "package.json" ] && npm run | grep -q "test"; then
+          if [ -f package.json ] && npm run | grep -q "test"; then
             npm test --if-present -- --watchAll=false
           else
             echo "No frontend tests found, skipping..."
           fi
 
-      # -----------------------------
-      # 5. Optional: Run start script (sanity check)
-      # -----------------------------
-      - name: Run start script (sanity test)
+      # 5️⃣ Optional start script (sanity check)
+      - name: Run start script
         run: |
           chmod +x ./start.sh
-          ./start.sh || echo "Skipping runtime verification for CI"
+          ./start.sh || echo "Skipping runtime verification"
 
