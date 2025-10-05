@@ -1,25 +1,15 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    const uri = process.env.MONGO_URI;
-    if (!uri) {
-      throw new Error("❌ Missing MONGO_URI");
-    }
-
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log("✅ MongoDB connected successfully!");
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log(process.env.MONGO_URI)
+    console.log("✅ MongoDB Connected...");
   } catch (error) {
     console.error("❌ Database connection failed:", error.message);
-    process.exit(1);
+    process.exit(1); // Exit process with failure
   }
 };
 
-export default connectDB;
+module.exports = connectDB;
