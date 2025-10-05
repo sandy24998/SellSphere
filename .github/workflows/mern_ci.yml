@@ -18,14 +18,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
-      - name: Setup Node.js ${{ matrix.node-version }}
+      # 2️⃣ Backend setup
+      - name: Setup Node.js for backend
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: 'npm'
+          cache-dependency-path: back-end/package-lock.json
 
-      # 3️⃣ Backend (back-end folder)
       - name: Install backend dependencies
         working-directory: back-end
         run: npm ci
@@ -39,7 +39,14 @@ jobs:
             echo "No backend tests found, skipping..."
           fi
 
-      # 4️⃣ Frontend (front-end folder)
+      # 3️⃣ Frontend setup
+      - name: Setup Node.js for frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: front-end/package-lock.json
+
       - name: Install frontend dependencies
         working-directory: front-end
         run: npm ci
@@ -57,7 +64,7 @@ jobs:
             echo "No frontend tests found, skipping..."
           fi
 
-      # 5️⃣ Optional start script (sanity check)
+      # 4️⃣ Optional start script
       - name: Run start script
         run: |
           chmod +x ./start.sh
