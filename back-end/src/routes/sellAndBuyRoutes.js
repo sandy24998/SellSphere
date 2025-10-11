@@ -5,8 +5,6 @@ const router = express.Router();
 // GET /api/sellProduct
 router.get('/sellProduct', async (req, res) => {
     try {
-        console.log('Request received at /api/sellProduct', req.query);
-
         const query = {};
         const sort = {};
 
