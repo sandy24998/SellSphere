@@ -9,6 +9,11 @@ if (isNaN(PORT)) {
   process.exit(1);
 }
 
+app.get('/api', (req, res) => {
+  res.json({ status: 'OK', message: 'Backend is running' });
+});
+
+
 // ✅ Start server
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log("========================================");
