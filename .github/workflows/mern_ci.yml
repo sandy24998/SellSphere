@@ -36,9 +36,9 @@ jobs:
         working-directory: ./front-end
         run: npm ci
 
-      - name: Build frontend
-        working-directory: ./front-end
-        run: npm run build
+      # - name: Build frontend
+      #   working-directory: ./front-end
+      #   run: npm run build
 
       - name: Start or reload apps with PM2
         run: |
