@@ -8,7 +8,11 @@ connectDB();
 
 const app = express();
 
-app.use(cors()); // Correct cors usage
+app.use(cors({
+  origin: 'http://localhost:3000', // frontend origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json()); // Correct json body parsing
 app.use(express.urlencoded({ extended: true })); // Correct urlencoded body parsing
 app.use('/api', router);
