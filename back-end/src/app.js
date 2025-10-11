@@ -1,34 +1,38 @@
-const express = require("express");
-const cors = require("cors");
-const router = require('./routes/sellAndBuyRoutes');
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
+const router = require('./routes/sellAndBuyRoutes'); // your API routes
 
-require("dotenv").config();
+const app = express();
 
 // Connect to MongoDB
 connectDB();
-
-const app = express();
 
 // JSON & URL-encoded parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Global CORS middleware for frontend
+// CORS for React frontend
 app.use(cors({
-  origin: 'http://localhost:3000', // your React app origin
+  origin: 'http://localhost:3000',
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
   credentials: true
 }));
 
-// Handle OPTIONS preflight for all /api routes
-app.options('/api/*', cors());
+// Handle preflight OPTIONS
+app.options('*', cors());
 
 // Mount API routes
 app.use('/api', router);
 
-// Catch all for unmatched routes
+// Health check
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Backend is running' });
+});
+
+// Catch-all for 404
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
