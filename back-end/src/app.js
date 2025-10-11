@@ -28,7 +28,7 @@ app.options('*', cors());
 app.use('/api', router);
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get('/api', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Backend is running' });
 });
 
