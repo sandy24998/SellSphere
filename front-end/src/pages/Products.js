@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Products.css';
-import ProductUpdate from '../components/ProductUpdate';
-import Navbar from "../components/Navbar";
+import ProductUpdate from '../Components/ProductUpdate';
+import Navbar from "../Components/Navbar";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
