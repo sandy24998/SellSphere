@@ -7,6 +7,8 @@ import Navbar from "../Components/Navbar";
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editingId, setEditingId] = useState(null);
+
 
     const loadProducts = async () => {
         try {
@@ -23,6 +25,17 @@ const Products = () => {
     useEffect(() => {
         loadProducts();
     }, []);
+
+
+    const handleEditClick = (productId) => {
+        setEditingId(editingId === productId ? null : productId);
+    };
+
+
+    const handleUpdateSuccess = () => {
+        setEditingId(null);
+        loadProducts();
+    };
 
     return (
         <div className="products-page">
@@ -42,6 +55,13 @@ const Products = () => {
                                 <div key={product._id} className="product-card">
                                     <div className="product-header">
                                         <h2 className="product-name">{product.productName}</h2>
+                                        <button 
+                                            className={`edit-toggle ${editingId === product._id ? 'active' : ''}`}
+                                            onClick={() => handleEditClick(product._id)}
+                                            title={editingId === product._id ? 'Close edit' : 'Edit product'}
+                                        >
+                                            {editingId === product._id ? '✕' : '✎'}
+                                        </button>
                                     </div>
                                     <div className="product-details">
                                         <div className="price-row">
@@ -57,9 +77,14 @@ const Products = () => {
                                             <span className="value profit">${(product.soldPrice - product.costPrice).toFixed(2)}</span>
                                         </div>
                                     </div>
-                                    <div className="product-actions">
-                                        <ProductUpdate productId={product._id} onUpdate={loadProducts}/>
-                                    </div>
+                                     {editingId === product._id && (
+                                        <div className="product-actions">
+                                            <ProductUpdate 
+                                                productId={product._id} 
+                                                onUpdate={handleUpdateSuccess}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             ))
                         ) : (
