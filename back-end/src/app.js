@@ -4,8 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 
 // Routers
-const sellAndBuyRoutes = require('./routes/sellAndBuyRoutes');
-const matchRoutes = require('./routes/matchRoutes');
+const candidateRoutes = require('./routes/Practice');
 
 const app = express();
 
@@ -28,22 +27,16 @@ app.options('*', cors());
 
 
 // -------------------------------
-// ✅ Mount BOTH routers cleanly
+// ✅ Mount Routes
 // -------------------------------
 
-// OLD PROJECT (Sell & Buy APIs)
-app.use('/api', sellAndBuyRoutes);
-// Example endpoints remain:
-// /api/addProduct
-// /api/updateProduct
-// /api/getProducts
-
-// NEW PROJECT (Match APIs)
-app.use('/api/matches', matchRoutes);
+// CANDIDATE MANAGEMENT APIs
+app.use('/api/candidates', candidateRoutes);
 // Example endpoints:
-// /api/matches/add
-// /api/matches/update/:id
-// /api/matches/all
+// /api/candidates/add
+// /api/candidates/update/:id
+// /api/candidates/list
+// /api/candidates/delete/:id
 
 
 // Health Check

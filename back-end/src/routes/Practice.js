@@ -2,8 +2,9 @@
 //  CANDIDATE ROUTER — CRUD API (POST, GET, PATCH, DELETE)
 // ============================================================================
 
-import express from "express";
-import mongoose from "mongoose";
+const express = require('express');
+const mongoose = require('mongoose');
+const Candidate = require('../models/Candidate');
 
 const router = express.Router();
 
@@ -133,39 +134,46 @@ router.patch("/update/:id", async (req, res) => {
 // ============================================================================
 //  GET — FILTER / SEARCH / SORT / LIMIT CANDIDATES
 // ============================================================================
+
 router.get("/list", async (req, res) => {
   try {
     const { name, skills, status, sort, limit } = req.query;
-
     const filter = {};
 
-    if (name) filter.name = { $regex: name, $options: "i" };
-    if (status) filter.status = status;
+    // Search by name
+    if (name) {
+      filter.name = name;
+    }
+
+    if (status) {
+      filter.status = status;
+    }
 
     if (skills) {
       const skillArray = skills.split(",");
-      filter.skills = { $all: skillArray };
+      if (skillArray.length > 0) {
+        filter.skills = { $all: skillArray };
+      }
     }
 
     let query = Candidate.find(filter);
 
-    if (sort === "asc") query = query.sort({ createdAt: 1 });
-    if (sort === "desc") query = query.sort({ createdAt: -1 });
+    if (sort === "name") query.sort({ name: 1 });
+    if (sort === "experience") query.sort({ experience: -1 });
+    if (sort === "recent") query.sort({ createdAt: -1 });
 
-    if (limit && !isNaN(limit)) query = query.limit(Number(limit));
+    if (limit && !isNaN(limit)) query.limit(Number(limit));
 
     const candidates = await query;
 
-    if (candidates.length === 0) {
-      return res.status(400).json({ error: "No candidates found" });
-    }
-
     return res.status(200).json({
       message: "Candidates found",
-      candidates,
+      candidates
     });
+
   } catch (error) {
     console.error("Error fetching candidates:", error);
+
     return res.status(500).json({
       error: "Failed to fetch candidates",
       details: error.message,
@@ -173,23 +181,20 @@ router.get("/list", async (req, res) => {
   }
 });
 
+
 // ============================================================================
 //  DELETE — REMOVE CANDIDATE
 // ============================================================================
 router.delete("/delete/:id", async (req, res) => {
   try {
     const candidateId = req.params.id;
-
     if (!candidateId || !mongoose.Types.ObjectId.isValid(candidateId)) {
       return res.status(400).json({ error: "Valid candidate ID is required" });
     }
-
     const deletedCandidate = await Candidate.findByIdAndDelete(candidateId);
-
     if (!deletedCandidate) {
       return res.status(404).json({ error: "Candidate not found" });
     }
-
     return res.status(200).json({
       message: "Candidate deleted successfully",
       candidate: deletedCandidate,
@@ -203,4 +208,4 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
